@@ -7,7 +7,7 @@ from .models import Materials, Project, Requests
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
-        fields = ('user', "name", "contractor_email", "password")
+        fields = ("name", "contractor_email", "password")
 
     def update(self, instance, validated_data):
         instance.name = validated_data.get("name", instance.title)

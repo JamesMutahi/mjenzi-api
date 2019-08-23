@@ -4,3 +4,4 @@ virtual/
 .idea
 .vscode
 ./pycache
+sendgrid.env

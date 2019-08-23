@@ -12,12 +12,18 @@ from .decorators import validate_material_data, validate_project_data, validate_
 from .models import Materials, Project, Requests
 from .serializers import MaterialsSerializer, TokenSerializer, UserSerializer, ProjectSerializer, RequestSerializer
 
+# send email
+import os
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 # Get the JWT settings
 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
 jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
 
+
 def home(request):
     return render(request, 'home.html')
+
 
 class ListCreateProjectView(generics.ListCreateAPIView):
     """
@@ -30,11 +36,31 @@ class ListCreateProjectView(generics.ListCreateAPIView):
 
     @validate_project_data
     def post(self, request, *args, **kwargs):
+        username = request.data.get("name", "")
+        password = request.data.get("password", "")
+        email = request.data.get("contractor_email", "")
         a_project = Project.objects.create(
             name=request.data["name"],
-            contractor=request.data["contractor_email"],
+            contractor_email=request.data["contractor_email"],
+            password=request.data["password"],
             user=request.user,
         )
+        new_user = User.objects.create_user(
+            username=username, password=password, email=email
+        )
+        message = Mail(
+            from_email='no-reply@gmail.com',
+            to_emails=email,
+            subject='MJENZI APP',
+            html_content='You have been added to a project by a developer. Your password is {{ password }}')
+        try:
+            sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+            response = sg.send(message)
+            print(response.status_code)
+            print(response.body)
+            print(response.headers)
+        except Exception as e:
+            print(e.message)
         return Response(
             data=ProjectSerializer(a_project).data,
             status=status.HTTP_201_CREATED
@@ -286,6 +312,5 @@ class RegisterUsers(generics.CreateAPIView):
             username=username, password=password, email=email
         )
         return Response(
-            data=UserSerializer(new_user).data,
-            status=status.HTTP_201_CREATED
+            data=UserSerializer(new_user).data, status=status.HTTP_201_CREATED
         )
