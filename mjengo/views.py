@@ -12,6 +12,9 @@ from .decorators import validate_material_data, validate_project_data, validate_
 from .models import Materials, Project, Requests
 from .serializers import MaterialsSerializer, TokenSerializer, UserSerializer, ProjectSerializer, RequestSerializer
 
+# send mail
+from django.core.mail import send_mail
+
 # Get the JWT settings
 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
 jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
@@ -44,6 +47,15 @@ class ListCreateProjectView(generics.ListCreateAPIView):
         new_user = User.objects.create_user(
             username=username, password=password, email=email
         )
+        send_mail('MJENZI',
+                  'You have been added to a project.'
+                  'Username: {{ username }}'
+                  'Password: {{ password }}'
+                  'Use {{username}} as the username and {{ password }} as passto login'
+                  'This is an automated message',
+                  'mutahijames0@gmail.com',
+                  [{{email}}],
+                  fail_silently=False)
         return Response(
             data=ProjectSerializer(a_project).data,
             status=status.HTTP_201_CREATED
