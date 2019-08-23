@@ -7,11 +7,12 @@ from .models import Materials, Project, Requests
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
-        fields = ('user', "name", "contractor")
+        fields = ('user', "name", "contractor_email", "password")
 
     def update(self, instance, validated_data):
         instance.name = validated_data.get("name", instance.title)
-        instance.contractor = validated_data.get("contractor", instance.artist)
+        instance.contractor = validated_data.get("contractor_email", instance.artist)
+        instance.contractor = validated_data.get("password", instance.artist)
         instance.save()
         return instance
 
@@ -32,14 +33,13 @@ class MaterialsSerializer(serializers.ModelSerializer):
 class RequestSerializer(serializers.ModelSerializer):
     class Meta:
         model = Requests
-        fields = ("name", "quantity", "project", "photo", "location")
+        fields = ("name", "quantity", "project", "photo")
 
     def update(self, instance, validated_data):
         instance.name = validated_data.get("name", instance.name)
         instance.quantity = validated_data.get("quantity", instance.quantity)
         instance.project = validated_data.get("project", instance.project)
         instance.photo = validated_data.get("photo", instance.photo)
-        instance.location = validated_data.get("location", instance.location)
         instance.save()
         return instance
 

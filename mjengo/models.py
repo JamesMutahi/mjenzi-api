@@ -13,7 +13,7 @@ class Project(models.Model):
     # location = models.PointField()
 
     def __str__(self):
-        return "{} - {}".format(self.name, self.contractor)
+        return "{} - {}".format(self.name, self.contractor_email)
 
 
 class Materials(models.Model):
@@ -35,6 +35,3 @@ class Requests(models.Model):
     photo = models.ImageField(default='projects/default.jpeg', upload_to='projects')
     # location = models.PointField()
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
-
-
-

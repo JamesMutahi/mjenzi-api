@@ -32,7 +32,7 @@ class ListCreateProjectView(generics.ListCreateAPIView):
     def post(self, request, *args, **kwargs):
         a_project = Project.objects.create(
             name=request.data["name"],
-            contractor=request.data["contractor"],
+            contractor=request.data["contractor_email"],
             user=request.user,
         )
         return Response(
