@@ -5,7 +5,7 @@ from model_utils import Choices
 
 
 class Project(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
     name = models.CharField(max_length=100, null=False, unique=True)
     password = models.CharField(max_length=40, null=False)
     contractor_email = models.CharField(max_length=100, null=False)

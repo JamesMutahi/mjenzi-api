@@ -38,6 +38,12 @@ class ListCreateProjectView(generics.ListCreateAPIView):
         username = request.data.get("name", "")
         password = request.data.get("password", "")
         email = request.data.get("contractor_email", "")
+        send_mail('MJENZI',
+                  ('Username: {username} Password: {password} This is an automated message').format(username=username,
+                                                                                                    password=password),
+                  'mutahijames0@gmail.com',
+                  [('{email}').format(email=email)],
+                  fail_silently=False)
         a_project = Project.objects.create(
             name=request.data["name"],
             contractor_email=request.data["contractor_email"],
@@ -47,15 +53,6 @@ class ListCreateProjectView(generics.ListCreateAPIView):
         new_user = User.objects.create_user(
             username=username, password=password, email=email
         )
-        send_mail('MJENZI',
-                  'You have been added to a project.'
-                  'Username: {{ username }}'
-                  'Password: {{ password }}'
-                  'Use {{username}} as the username and {{ password }} as passto login'
-                  'This is an automated message',
-                  'mutahijames0@gmail.com',
-                  [{{email}}],
-                  fail_silently=False)
         return Response(
             data=ProjectSerializer(a_project).data,
             status=status.HTTP_201_CREATED
