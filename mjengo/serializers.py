@@ -10,9 +10,9 @@ class ProjectSerializer(serializers.ModelSerializer):
         fields = ("name", "contractor_email", "password")
 
     def update(self, instance, validated_data):
-        instance.name = validated_data.get("name", instance.title)
-        instance.contractor = validated_data.get("contractor_email", instance.artist)
-        instance.contractor = validated_data.get("password", instance.artist)
+        instance.name = validated_data.get("name", instance.name)
+        instance.contractor_email = validated_data.get("contractor_email", instance.contractor_email)
+        instance.password = validated_data.get("password", instance.password)
         instance.save()
         return instance
 

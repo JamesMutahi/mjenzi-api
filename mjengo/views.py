@@ -21,6 +21,15 @@ jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
 
 
 def home(request):
+    username = "James"
+    password = "Password"
+    email = "mjenzapp@yahoo.com"
+    send_mail('MJENZI',
+              ('Username: {username} Password: {password} This is an automated message').format(username=username,
+                                                                                                password=password),
+              'mutahijames0@gmail.com',
+              [('{email}').format(email=email)],
+              fail_silently=False)
     return render(request, 'home.html')
 
 
@@ -38,21 +47,21 @@ class ListCreateProjectView(generics.ListCreateAPIView):
         username = request.data.get("name", "")
         password = request.data.get("password", "")
         email = request.data.get("contractor_email", "")
+        a_project = Project.objects.create(
+            name=request.data["name"],
+            contractor_email=request.data["contractor_email"],
+            password=request.data["password"],
+            # user=request.user,
+        )
+        new_user = User.objects.create_user(
+            username=username, password=password, email=email
+        )
         send_mail('MJENZI',
                   ('Username: {username} Password: {password} This is an automated message').format(username=username,
                                                                                                     password=password),
                   'mutahijames0@gmail.com',
                   [('{email}').format(email=email)],
                   fail_silently=False)
-        a_project = Project.objects.create(
-            name=request.data["name"],
-            contractor_email=request.data["contractor_email"],
-            password=request.data["password"],
-            user=request.user,
-        )
-        new_user = User.objects.create_user(
-            username=username, password=password, email=email
-        )
         return Response(
             data=ProjectSerializer(a_project).data,
             status=status.HTTP_201_CREATED

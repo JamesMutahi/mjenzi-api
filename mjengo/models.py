@@ -2,12 +2,13 @@ from django.db import models
 from django.contrib.auth.models import User
 # from django.contrib.gis.db import models
 from model_utils import Choices
+from fernet_fields import EncryptedTextField
 
 
 class Project(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
+    # user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
     name = models.CharField(max_length=100, null=False, unique=True)
-    password = models.CharField(max_length=40, null=False)
+    password = EncryptedTextField(max_length=40, null=False)
     contractor_email = models.CharField(max_length=100, null=False)
     description = models.TextField(default="no description")
     # location = models.PointField()
