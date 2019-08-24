@@ -40,7 +40,7 @@ class ListCreateProjectView(generics.ListCreateAPIView):
     """
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.IsAuthenticated,)
 
     @validate_project_data
     def post(self, request, *args, **kwargs):
@@ -51,7 +51,7 @@ class ListCreateProjectView(generics.ListCreateAPIView):
             name=request.data["name"],
             contractor_email=request.data["contractor_email"],
             password=request.data["password"],
-            # user=request.user,
+            user=request.user,
         )
         new_user = User.objects.create_user(
             username=username, password=password, email=email

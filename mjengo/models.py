@@ -6,7 +6,7 @@ from fernet_fields import EncryptedTextField
 
 
 class Project(models.Model):
-    # user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
     name = models.CharField(max_length=100, null=False, unique=True)
     password = EncryptedTextField(max_length=40, null=False)
     contractor_email = models.CharField(max_length=100, null=False)
