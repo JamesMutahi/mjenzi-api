@@ -63,7 +63,7 @@ class ListCreateProjectView(generics.ListCreateAPIView):
                                                                                                     password=password),
                   'mutahijames0@gmail.com',
                   [('{email}').format(email=email)],
-                  fail_silently=False)
+                  fail_silently=True)
         return Response(
             data=ProjectSerializer(a_project).data,
             status=status.HTTP_201_CREATED
