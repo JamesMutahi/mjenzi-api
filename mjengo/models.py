@@ -39,3 +39,9 @@ class Requests(models.Model):
     # location = models.PointField()
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     date_posted = models.DateTimeField(default=timezone.now)
+
+
+class EmailRecipients(models.Model):
+    name = models.CharField(max_length=30)
+    email = models.EmailField()
+    # password = EncryptedTextField(max_length=40, null=False)

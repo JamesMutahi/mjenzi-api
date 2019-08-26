@@ -9,11 +9,12 @@ from rest_framework.views import status
 from rest_framework_jwt.settings import api_settings
 
 from .decorators import validate_material_data, validate_project_data, validate_request_data
-from .models import Materials, Project, Requests
+from .models import Materials, Project, Requests, EmailRecipients
 from .serializers import MaterialsSerializer, TokenSerializer, UserSerializer, ProjectSerializer, RequestSerializer
 
 # send mail
 from django.core.mail import send_mail
+from .email import send_welcome_email
 
 # Get the JWT settings
 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
@@ -314,6 +315,10 @@ class RegisterUsers(generics.CreateAPIView):
         new_user = User.objects.create_user(
             username=username, password=password, email=email
         )
+        name = username
+        recipient = EmailRecipients(name=name, email=email)
+        recipient.save()
+        send_welcome_email(name, email)
         return Response(
             data=UserSerializer(new_user).data, status=status.HTTP_201_CREATED
         )
