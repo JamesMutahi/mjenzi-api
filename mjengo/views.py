@@ -61,7 +61,7 @@ class ListCreateProjectView(generics.ListCreateAPIView):
                    'Password: {password}.'
                    'Do not reply. This is an automated message').format(username=username,
                                                                                                     password=password),
-                  'mutahijames0@gmail.com',
+                  'mjenziapp@gmail.com',
                   [('{email}').format(email=email)],
                   fail_silently=True)
         return Response(
