@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 # from django.contrib.gis.db import models
 from model_utils import Choices
 from fernet_fields import EncryptedTextField
+from django.utils import timezone
 
 
 class Project(models.Model):
@@ -12,6 +13,7 @@ class Project(models.Model):
     contractor_email = models.CharField(max_length=100, null=False)
     description = models.TextField(default="no description")
     # location = models.PointField()
+    date_posted = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return "{} - {}".format(self.name, self.contractor_email)
@@ -36,3 +38,4 @@ class Requests(models.Model):
     photo = models.ImageField(default='projects/default.jpeg', upload_to='projects')
     # location = models.PointField()
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    date_posted = models.DateTimeField(default=timezone.now)

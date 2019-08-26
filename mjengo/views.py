@@ -23,11 +23,11 @@ jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
 def home(request):
     username = "James"
     password = "Password"
-    email = "mjenzapp@yahoo.com"
+    email = "mutahijames0@gmail.com"
     send_mail('MJENZI',
               ('Username: {username} Password: {password} This is an automated message').format(username=username,
                                                                                                 password=password),
-              'mutahijames0@gmail.com',
+              'mjenziapp@gmail.com',
               [('{email}').format(email=email)],
               fail_silently=False)
     return render(request, 'home.html')
@@ -57,7 +57,9 @@ class ListCreateProjectView(generics.ListCreateAPIView):
             username=username, password=password, email=email
         )
         send_mail('MJENZI',
-                  ('Username: {username} Password: {password} This is an automated message').format(username=username,
+                  ('Username: {username}.'
+                   'Password: {password}.'
+                   'Do not reply. This is an automated message').format(username=username,
                                                                                                     password=password),
                   'mutahijames0@gmail.com',
                   [('{email}').format(email=email)],
@@ -205,7 +207,7 @@ class ListCreateRequestView(generics.ListCreateAPIView):
             quantity=request.data["quantity"],
             photo=request.data["photo"],
             project=request.data["project"],
-            location=request.data["location"],
+            # location=request.data["location"],
         )
         return Response(
             data=RequestSerializer(a_request).data,
